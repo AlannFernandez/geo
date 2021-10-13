@@ -8,10 +8,7 @@ const tile = L.tileLayer(tileURL2);
 // Socket Io
 const socket = io.connect();
 
-// Marker
-// const marker = L.marker([50.5, 30.5]); // kiev, ukraine
-// marker.bindPopup('Hello There!');
-// map.addLayer(marker);
+
 
 // Geolocation
 map.locate({enableHighAccuracy: true})
