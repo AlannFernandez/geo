@@ -5,6 +5,8 @@ const tileURL2 = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
 
 const tile = L.tileLayer(tileURL2);
 
+map.doubleClickZoom.disable();
+
 // Socket Io
 const socket = io.connect();
 
@@ -15,10 +17,24 @@ map.locate({enableHighAccuracy: true})
 map.on('locationfound', (e) => {
   const coords = [e.latlng.lat, e.latlng.lng];
   const newMarker = L.marker(coords);
-  newMarker.bindPopup('Mi ubicación');
+  newMarker.bindPopup('Mi ubicación API');
   map.addLayer(newMarker);
   socket.emit('userCoordinates', e.latlng);
 });
+
+
+//user marker
+map.on('dblclick', e=>{
+  let userMarker = null;
+  let latlng = map.mouseEventToLatLng(e.originalEvent);
+  console.log(latlng);
+  userMarker = L.marker([latlng.lat, latlng.lng]).bindPopup('Mi ubicación SELECTED');;
+  if(userMarker){
+    map.removeLayer(userMarker);
+  }
+  map.addLayer(userMarker);
+})
+
 
 // socket new User connected
 socket.on('newUserCoordinates', (coords) => {
